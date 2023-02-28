@@ -13,7 +13,7 @@
     "sourceMap": true,
     "strict": true,
     "target": "ESNext",
-    "types": ["node"],
+    "types": ["node"]
   },
   "include": ["src/**/*", "types/**/*"],
   "exclude": ["dist", "node_modules", "test/types"]

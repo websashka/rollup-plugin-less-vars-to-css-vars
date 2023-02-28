@@ -2,7 +2,13 @@
 src/
 test/
 .github/
+.husky/
 
 rollup.config.mjs
 tsconfig.json
 yarn.lock
+.eslintignore
+.eslintrc.js
+.prettierignore
+.prettierrc.js
+
