@@ -1,0 +1,8 @@
+.idea/
+src/
+test/
+.github/
+
+rollup.config.mjs
+tsconfig.json
+yarn.lock
