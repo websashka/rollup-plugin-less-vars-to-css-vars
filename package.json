@@ -21,11 +21,9 @@
     "test:ts": "tsc --noEmit"
   },
   "files": [
-    "dist",
-    "!dist/**/*.map",
-    "types",
-    "README.md",
-    "LICENSE"
+    "dist/",
+    "types/",
+    "README.md"
   ],
   "keywords": [
     "rollup",
