@@ -21,9 +21,9 @@ jobs:
       - run: |
           git config user.name github-actions
           git config user.email jagyarg@gmail.com
-          yarn version --new-version ${{github.events.inputs.version}}
-          git push origin master
-          git push origin v${{github.events.inputs.version}}
+          yarn version --new-version ${{inputs.version}}
+          git push origin main
+          git push origin v${{inputs.version}}
       - run: yarn build
       - run: yarn publish
         env:
