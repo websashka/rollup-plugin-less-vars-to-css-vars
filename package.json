@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-less-vars-to-css-vars",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "repository": "https://github.com/websashka/rollup-plugin-less-vars-to-css-vars.git",
   "author": "Alexander <jagyarg@gmail.com>",
