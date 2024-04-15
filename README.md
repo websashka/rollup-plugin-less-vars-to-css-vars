@@ -2,14 +2,8 @@
 
 ## Options
 
-### source
+### exclude
 
-- Type: String
-- Required
+- Type: String[]
 
-Path to file with variables
-
-### descination
-
-- Type: String
-- Default: `dist/`
+Excluded paths
