@@ -82,7 +82,7 @@ body {
 ```
 
 ```css
-/* theme.less */
+/* theme.css */
 :root {
   --primary-color: #0000ff;
   --text-color: #594c4a;
