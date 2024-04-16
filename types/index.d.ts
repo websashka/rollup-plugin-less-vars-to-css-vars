@@ -1,3 +1,4 @@
 export interface Options {
-  exclude?: string[];
+  exclude?: string[] | RegExp[];
+  output?: string;
 }

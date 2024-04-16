@@ -1,16 +1,19 @@
-import path from 'path';
-
 import type { Plugin } from 'rollup';
 import less from 'less';
 
 import type { Options } from '../types';
+
+import { filterByExclude } from './utils';
 
 interface Variable {
   name: string;
   value: string;
 }
 
-const extractVariables = (input: string, { exclude }: { exclude: string[] }): Promise<Variable[]> =>
+const extractVariables = (
+  input: string,
+  { exclude }: { exclude: string[] | RegExp[] }
+): Promise<Variable[]> =>
   new Promise((resolve, reject) => {
     less.parse(
       input,
@@ -33,10 +36,7 @@ const extractVariables = (input: string, { exclude }: { exclude: string[] }): Pr
             const cssValue = value.toCSS(ctx);
             // eslint-disable-next-line no-underscore-dangle
             const { filename } = variable._fileInfo;
-            if (
-              exclude.length > 0 &&
-              exclude.some((excPath) => path.resolve(filename).startsWith(path.resolve(excPath)))
-            ) {
+            if (filterByExclude(filename, exclude)) {
               return acc;
             }
             acc.push({
@@ -58,9 +58,9 @@ export default function exportLessVars(options: Options | undefined): Plugin {
   const variables: any = {};
   return {
     name: 'less-vars-to-css-vars',
-    async load(path) {
-      if (path.endsWith('.less')) {
-        const chunkVariables = await extractVariables(`@import "${path}";`, {
+    async load(filePath) {
+      if (filePath.endsWith('.less')) {
+        const chunkVariables = await extractVariables(`@import "${filePath}";`, {
           exclude: options?.exclude || []
         });
         chunkVariables.forEach((variable) => {
@@ -68,15 +68,23 @@ export default function exportLessVars(options: Options | undefined): Plugin {
         });
       }
     },
-    async generateBundle() {
+    async generateBundle(_, bundle) {
       const content = Object.entries(variables)
         .map(([key, value]) => `--${key}: ${value};`)
         .join('');
-      this.emitFile({
-        fileName: 'variables.css',
-        type: 'asset',
-        source: `:root{${content}}`
-      });
+      const fileName = options?.output || 'variables.css';
+
+      const existAsset = bundle[fileName];
+      if (existAsset && existAsset.type === 'asset') {
+        existAsset.source = `:root{${content}}\n${existAsset.source}`;
+      }
+      if (!existAsset) {
+        this.emitFile({
+          fileName,
+          type: 'asset',
+          source: `:root{${content}}`
+        });
+      }
     }
   };
 }
